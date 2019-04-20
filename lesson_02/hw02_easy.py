@@ -1,5 +1,7 @@
 from random import seed, randint
 
+__author__ = 'Зелепукин Алексей Юрьевич'
+
 # Задача-1:
 # Дан список фруктов.
 # Напишите программу, выводящую фрукты в виде нумерованного списка,
@@ -17,8 +19,8 @@ from random import seed, randint
 
 fruits = ["яблоко", "банан", "киви", "арбуз"]
 
-for idx, fruit in enumerate(fruits):
-    print('{0:}. {1:>6}'.format(idx + 1, fruit))
+for idx, fruit in enumerate(fruits, start=1):
+    print('{0:}. {1:>6}'.format(idx, fruit))
 
 # Задача-2:
 # Даны два произвольные списка.
