@@ -80,9 +80,22 @@ else:
 # Вход: 11
 # Выход: 5 3
 
-# N = int(input('Введите число N (1 ≤ N ≤ 2 000 000 000): '))
 N = 13
 
+floor = room = 1
+x = y = 0
 
-def f(room):
-    pass
+while N > 0:
+    for _ in range(floor):
+        x += 1
+        for j in range(room):
+            N -= 1
+            if N == 0:
+                y = j + 1
+                break
+        if N == 0:
+            break
+    floor += 1
+    room += 1
+
+print(x, y)
