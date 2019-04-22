@@ -29,6 +29,9 @@ for idx, fruit in enumerate(fruits, start=1):
 first_list = list(range(10))
 second_list = list(range(0, 10, 2))
 
+print(first_list)
+print(second_list)
+
 for item in first_list:
     if item in second_list:
         first_list.remove(item)
