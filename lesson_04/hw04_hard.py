@@ -19,15 +19,18 @@ matrix = [[1, 0, 8],
 def print_matrix(matrix):
     for row in matrix:
         for col in row:
-            print(col, end=' ')
+            print('{:4d}'.format(col), end=' ')
         print()
 
 
 print(len(matrix))
 
-matrix_rotate = [ [matrix[row][col] for row in range(0, 3)] for col in range(0, 3) ]
+# matrix_rotate = [[matrix[row][col] for row in range(0, len(matrix))] for col in range(0, len(matrix[0]))]
+# matrix_rotate = list(map(list, zip(*matrix)))
+matrix_rotate = [list(x) for x in zip(*matrix)]
 
 print_matrix(matrix)
+print()
 print_matrix(matrix_rotate)
 
 # Задание-2:
