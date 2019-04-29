@@ -2,6 +2,7 @@ __author__ = 'Зелепукин Алексей Юрьевич'
 
 import re
 import random
+import os
 
 # Задание-1:
 # Вывести символы в нижнем регистре, которые находятся вокруг
@@ -121,3 +122,18 @@ a, b = 0, 9
 
 num_list = [random.randint(a, b) for _ in range(n)]
 num_str = ''.join(list(map(lambda x: str(x), num_list)))
+
+path = os.path.join('data\\' + 'file' + '.txt')
+
+with open(path, 'w', encoding='UTF-8') as file:
+    file.write(num_str)
+file.close()
+ 
+with open(path, 'r', encoding='UTF-8') as file:
+    text = file.read()
+file.close()
+
+search_result = re.search(r'([0-9])\1+', text)
+sequence = search_result.group()
+
+print(f'Самая длинная последовательность одинаковых цифр: {sequence}')
