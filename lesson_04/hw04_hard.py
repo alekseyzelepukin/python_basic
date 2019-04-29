@@ -23,6 +23,8 @@ def print_matrix(matrix):
         print()
 
 
+print(len(matrix))
+
 # matrix_rotate = [[matrix[row][col] for row in range(0, len(matrix))] for col in range(0, len(matrix[0]))]
 # matrix_rotate = list(map(list, zip(*matrix)))
 matrix_rotate = [list(x) for x in zip(*matrix)]
@@ -56,6 +58,28 @@ number = """
 84580156166097919133875499200524063689912560717606
 05886116467109405077541002256983155200055935729725
 71636269561882670428252483600823257530420752963450"""
+
+num = number.replace('\n', '')
+
+idx = 0
+smax = 0
+s = 1
+for i, n in enumerate(num, start=1):
+    s *= int(n)
+    if i % 5 == 0:
+        if s > smax:
+            idx = i - 5
+            smax = s
+        s = 1
+
+print(f'Произведение: {smax}, индекс смещения: {idx}')
+
+# check:
+# num[idx:idx+5]
+# s = 1
+# for i in num[365:365 + 5]:
+#     s *= int(i)
+# print(s)
 
 # Задание-3 (Ферзи):
 # Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били
