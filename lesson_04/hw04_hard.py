@@ -74,7 +74,7 @@ for i, n in enumerate(num, start=1):
 
 print(f'Произведение: {smax}, индекс смещения: {idx}')
 
-# check:
+# проверка:
 # num[idx:idx+5]
 # s = 1
 # for i in num[365:365 + 5]:
