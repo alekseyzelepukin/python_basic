@@ -25,24 +25,20 @@ line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysmNO'\
        'zTYwZAiRwycdlHfyHNGmkNqSwXUrxGc'
 
 symbols_1 = re.findall(r'[a-z]+', line)
+
 print(f'С помощью re: \n{symbols_1}')
 
-# 2. Решение без re
-# print(ord('A'), ord('Z'))
-symbol = list(map(lambda x: chr(x), list(range(65, 91))))  # Преобразуем список из кодов ANSI в список букв A-Z
-line_new = list(line)
+letters = list(map(lambda x: chr(x), list(range(ord('A'), ord('Z') + 1))))
+line_list = list(line)
 
-for i, element in enumerate(line_new[:]):
-    for element_2 in symbol:
-        if element == element_2:
-            line_new[i] = ' '
+for idx, item in enumerate(line_list):
+    for letter in letters:
+        if item == letter:
+            line_list[idx] = ' '
 
-# Соединение списка в строку методом .join и разбиение строки по символу ' '
-stroka = ''.join(line_new).split(' ')
+symbols_2 = [x for x in ''.join(line_list).split(' ') if x != '']
 
-line_str_2 = [i for i in stroka if i != '']
-print('Символы в нижнем регистре без использованием модуля re: \n',line_str_2)
-print('------------------------------------------------------')
+print(f'Без помощи re: \n{symbols_2}')
 
 # Задание-2:
 # Вывести символы в верхнем регистре, слева от которых находятся
