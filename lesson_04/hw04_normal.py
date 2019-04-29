@@ -64,10 +64,9 @@ line_2 = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm'\
        'JFaXiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQ'\
        'oiQzTYwZAiRwycdlHfyHNGmkNqSwXUrxGC'
 
-# print(line_2)
-# 1. Решение с помощью re
-line_2_str = re.findall(r'[a-z]{2}([A-Z]+)[A-Z]{2}', line_2)
-print('Список с использованием модуля re: \n', line_2_str)
+strings_1 = re.findall(r'[a-z]{2}([A-Z]+)[A-Z]{2}', line_2)
+
+print('С помощью re: \n', strings_1)
 
 # 2. Решение без re
 symbol1 = list(map(lambda x: chr(x), list(range(65, 91))))  # Преобразуем список из кодов ANSI в список букв A-Z
