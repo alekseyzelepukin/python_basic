@@ -24,9 +24,8 @@ line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysmNO'\
        'XiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQoiQ'\
        'zTYwZAiRwycdlHfyHNGmkNqSwXUrxGc'
 
-# 1. Решение с помощью re
-line_str = re.findall(r'[a-z]+', line)
-print('Символы в нижнем регистре с использованием модуля re: \n', line_str)
+symbols_1 = re.findall(r'[a-z]+', line)
+print(f'С помощью re: \n{symbols_1}')
 
 # 2. Решение без re
 # print(ord('A'), ord('Z'))
