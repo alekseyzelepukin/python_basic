@@ -123,7 +123,7 @@ a, b = 0, 9
 num_list = [random.randint(a, b) for _ in range(n)]
 num_str = ''.join(list(map(lambda x: str(x), num_list)))
 
-path = os.path.join('data\\' + 'file' + '.txt')
+path = os.path.join('file' + '.txt')
 
 with open(path, 'w', encoding='UTF-8') as file:
     file.write(num_str)
