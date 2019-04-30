@@ -70,45 +70,45 @@ strings_1 = re.findall(r'[a-z]{2}([A-Z]+)[A-Z]{2}', line_2)
 
 print('С помощью re: \n', strings_1)
 
-# 2. Решение без re
-symbol1 = list(map(lambda x: chr(x), list(range(65, 91))))  # Преобразуем список из кодов ANSI в список букв A-Z
-symbol2 = list(map(lambda x: chr(x), list(range(97, 123))))  # Преобразуем список из кодов ANSI в список букв a-z
-line_new = list(line_2)
+letters_1 = list(map(lambda x: chr(x), list(range(ord('A'), ord('Z') + 1))))
+letters_2 = list(map(lambda x: chr(x), list(range(ord('a'), ord('z') + 1))))
+line_list_2 = list(line_2)
 
-lst = []
-i = len(line_new) - 1
-# Находим  символ в верхнем регистре после которого стоят еще два символа в верхнем регистре
+my_list_1 = []
+i = len(line_list_2) - 1
+
 while i >= 0:
-    if line_new[i] in symbol2:
-        lst.append(line_new[i])
-    elif line_new[i] in symbol1 and i <= len(line_new) - 3 and line_new[i + 1] in symbol1 and line_new[
-        i + 2] in symbol1:
-        lst.append(line_new[i])
+    if line_list_2[i] in letters_2:
+        my_list_1.append(line_list_2[i])
+    elif line_list_2[i] in letters_1 and i <= len(line_list_2) - 3 and line_list_2[i + 1] in letters_1 and line_list_2[i + 2] in letters_1:
+        my_list_1.append(line_list_2[i])
     else:
-        lst.append(' ')
+        my_list_1.append(' ')
     i -= 1
-lst.reverse()  # Переворачиваем список
+    
+my_list_1.reverse()
 
+my_list_2 = []
 i = 0
-lst2 = []
-registr = True  # Начальное условие поиска сортировки символов в верхнем регистре
-# Фильтрация списка.
-while i <= len(lst) - 1:
-    if lst[i] in symbol2:
-        registr = True
-    if lst[i] in symbol1 and lst[i - 1] in symbol2 and lst[i - 2] in symbol2:
-        lst2.append(lst[i])
-        registr = False
-    elif lst[i] in symbol1 and registr == False:
-        lst2.append(lst[i])
-    else:
-        lst2.append(' ')
-    i += 1
-stroka = ''.join(lst2).split(' ')  # Преобразование в строку и разбиение по пробелам
 
-line_str_3 = [i for i in stroka if i != '']  # Формирование выхрдного списка из строки
-print('Список без использованием модуля re: \n', line_str_3)
-print('------------------------------------------------------')
+is_capital = True
+
+while i <= len(my_list_1) - 1:
+    if my_list_1[i] in letters_2:
+        is_capital = True
+    if my_list_1[i] in letters_1 and my_list_1[i - 1] in letters_2 and my_list_1[i - 2] in letters_2:
+        my_list_2.append(my_list_1[i])
+        is_capital = False
+    elif my_list_1[i] in letters_1 and is_capital == False:
+        my_list_2.append(my_list_1[i])
+    else:
+        my_list_2.append(' ')
+    i += 1
+
+
+strings_2 = [x for x in ''.join(my_list_2).split(' ') if x != '']
+
+print('Без помощи re: \n', strings_2)
 
 # Задание-3:
 # Напишите скрипт, заполняющий указанный файл (самостоятельно задайте имя файла)
