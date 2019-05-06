@@ -25,42 +25,49 @@ def my_utility():
     print('*' * 32 + ' BEGIN ' + '*' * 32)
     print('\n')
     ans = None
+    path = os.getcwd()
     while ans != 5:
-        print('Текущая папка: ' + os.path.basename(os.getcwd()))
-        ans = int(input('Выберите действие (введите число):\n'
+        print('Текущая папка: ' + os.path.basename(path))
+        ans = input('Выберите действие (введите число):\n'
                        '1. Перейти в папку\n'
                        '2. Помотреть содержимое текущей папки\n'
                        '3. Удалить папку\n'
                        '4. Создать папку\n'
-                       '5. Выход\n'))
-        if ans == 5:
-            print('\n')
-            print('*' * 32 + ' END ' + '*' * 32)
-            print('\n')
-            break
-        elif ans == 1:
-            path_name = input('Введите название папки для перехода: ')
-            if hw05_easy.change_dir(path_name):
-                print(f'Успешный переход в папку {os.path.basename(path_name)}')
+                       '5. Выход\n')
+        try:
+            ans = int(ans)
+            if ans == 5:
+                print('\n')
+                print('*' * 32 + ' END ' + '*' * 32)
+                print('\n')
+                break
+            elif ans == 1:
+                folder_name = input('Введите название папки для перехода: ')
+                if hw05_easy.change_dir(folder_name):
+                    path = os.getcwd()
+                    print(f'Успешный переход в папку {os.path.basename(folder_name)}')
+                else:
+                    print(f'Не удалось перейти в папку {os.path.basename(folder_name)}')
+            elif ans == 2:
+                print(f'Содержимое текущей папки: {hw05_easy.list_dir(path=path, mode="a")}')
+            elif ans == 3:
+                name = input('Введите название удаляемой папки: ')
+                if hw05_easy.remove_dir(name):
+                    print(f'Папка {name} успешно удалена')
+                else:
+                    print(f'Не удалось удалить папку {name}')
+            elif ans == 4:
+                name = input('Введите название новой папки: ')
+                if hw05_easy.make_dir(name):
+                    print(f'Папка {name} успешно создана')
+                else:
+                    print(f'Не удалось создать папку {name}')
             else:
-                print(f'Не удалось перейти в папку {os.path.basename(path_name)}')
-        elif ans == 2:
-            print(f'Содержимое текущей папки: {hw05_easy.list_dir(mode="a")}')
-        elif ans == 3:
-            name = input('Введите название удаляемой папки: ')
-            if hw05_easy.remove_dir(name):
-                print(f'Папка {name} успешно удалена')
-            else:
-                print(f'Не удалось удалить папку {name}')
-        elif ans == 4:
-            name = input('Введите название новой папки: ')
-            if hw05_easy.make_dir(name):
-                print(f'Папка {name} успешно создана')
-            else:
-                print(f'Не удалось создать папку {name}')
-        else:
+                print('Неверный ввод. Попробуйте еще раз.')
+        except:
             print('Неверный ввод. Попробуйте еще раз.')
-        print('\n')
+        finally:
+            print('\n')
 
 
 my_utility()
