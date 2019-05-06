@@ -4,8 +4,6 @@ import os
 import sys
 import shutil
 
-# https://repl.it/@AlexanderProkho/lesson5hw
-
 # Задание-1:
 # Доработайте реализацию программы из примера examples/5_with_args.py,
 # добавив реализацию следующих команд (переданных в качестве аргументов):
