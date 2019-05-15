@@ -122,7 +122,7 @@ def game():
             break
 
         barrel = next(bag.get_barrel())
-        
+
         player_card.show_card()
         computer_card.show_card()
 
