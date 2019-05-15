@@ -122,6 +122,7 @@ def game():
             break
 
         barrel = next(bag.get_barrel())
+        
         player_card.show_card()
         computer_card.show_card()
 
@@ -155,7 +156,7 @@ def game():
             print('Компьютер выиграл!!')
         else:
             continue
-            
+
     print('*' * 33, 'END GAME', '*' * 33)
 
 
