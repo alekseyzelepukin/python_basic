@@ -1,3 +1,5 @@
+# !/usr/bin/python3
+
 """
 == Лото ==
 Правила игры в лото.
@@ -43,90 +45,118 @@
 модуль random: http://docs.python.org/3/library/random.html
 """
 
-import random, copy
-
-MAX_BARREL = 90
-DIGITS_IN_CARD = 15
-DIGITS_IN_LINE = 5
+import numpy as np
+import random
 
 
-def gen_card():
-    # combination of 15 random digits 1..MAX_BARREL without repetitions
-    num_comb = random.sample(range(1, MAX_BARREL + 1), DIGITS_IN_CARD)
-    # make list of sorted slices of num_comb of size DIGITS_IN_LINE;
-    # ie. divide num_comb into 3 sorted lists
-    card = [sorted(num_comb[i:i + DIGITS_IN_LINE]) for i in range(0, len(num_comb), DIGITS_IN_LINE)]
-    return card
+class Bag:
+    def __init__(self, number=90):
+        self._counter = number
+
+    def get_barrel(self):
+        barrels = [x for x in range(1, self._counter + 1)]
+        random.shuffle(barrels)
+        for idx, barrel in enumerate(barrels, start=1):
+            self._counter -= 1
+            print(f'Новый бочонок: {barrel} (осталось {self._counter})')
+            yield barrel
 
 
-def gen_barr_list():
-    return random.sample(range(1, MAX_BARREL + 1), 90)
+class Card():
+    def __init__(self, player_card=True):
+        self._player_card = player_card
+        self._card = self._generate_card()
+        self._digits_left = 15
 
+    @staticmethod
+    def _generate_card():
+        card = np.array(sorted(random.sample(range(1, 91), 15))).reshape(3, -1).tolist()
+        for row in card:
+            for _ in range(4):
+                row.insert(random.randint(0, 4), ' ')
+        return card
 
-def get_barrel(barr_list):
-    return barr_list.pop()
+    def update_card(self, barrel):
+        for i, row in enumerate(self._card):
+            for j, item in enumerate(row):
+                if item == barrel:
+                    self._card[i][j] = '-'
+                    self._digits_left -= 1
 
+    def check_card(self, barrel):
+        result = False
+        for row in self._card:
+            for item in row:
+                if item == barrel:
+                    result = True
+        return result
 
-def show_card(card):
-    card = copy.deepcopy(card)  # we don't want to modify the original list
-    placeholders = ' '.join(['{:>2}' for i in range(9)])  # create 9 placeholders in 'cells', separated by spaces
-    for line in card:
-        for space in ' ' * 4:
-            line.insert(random.randint(0, len(line) - 1), space)  # randomly insert 4 spaces in each card line
-    return [placeholders.format(*line) for line in card]
+    @property
+    def digits_left(self):
+        return self._digits_left
 
-
-def update_card(card, barrel):
-    # return [['-' if x == barrel else x for x in line] for line in card]
-    for line in card:
-        yield ['-' if x == barrel else x for x in line]
-
-
-def is_empty(card):
-    for line in card:
-        for elt in line:
-            if elt != '-':
-                return False
-    return True
-
-
-def barr_in_card(card, barrel):
-    return barrel in [barrel for line in card for barrel in line]
-
-
-# return True
-
-
-def play_round():
-    print('''Welcome to the loto game. You are playing against the computer.
-You must not mistake or you lose.
-Generating your card and mixing the barrels...\n''')
-    player_card, comp_card = gen_card(), gen_card()
-    barrels = gen_barr_list()
-    while True:  # check if all digits are crossed
-        next_barrel = get_barrel(barrels)
-        print('New barrel: {}. Left: {}'.format(next_barrel, len(barrels)))
-        print("{0} Player's card {0}\n{1}\n{2}\n{3}".format('-' * 6, *show_card(player_card)))
-        print("{0} Computer's card {0}\n{1}\n{2}\n{3}".format('-' * 5, *show_card(comp_card)))
-        answ = 'a'
-        while answ not in 'ynq':
-            answ = str(input("Is the barrel in player's card? y/n or q for exit: "))
-        if answ == 'q':
-            break
-        elif (answ == 'y' and barr_in_card(player_card, next_barrel)) or (answ == 'n' and not barr_in_card(player_card,
-                                                                                                           next_barrel)):
-            print("You're right! \n\nNext turn...")
+    def show_card(self):
+        if self._player_card:
+            print('------ Ваша карточка -----')
         else:
-            print("You lose!")
-            break
-        player_card = list(update_card(player_card, next_barrel))
-        comp_card = list(update_card(comp_card, next_barrel))
-        if is_empty(player_card):
-            print('You filled the entire card!')
-            break
-        if is_empty(comp_card):
-            print('Computer filled the entire card!')
-            break
+            print('-- Карточка компьютера ---')
+        prototype = ' '.join(['{:>2}' for i in range(9)])
+        card = [prototype.format(*row) for row in self._card]
+        for row in card:
+            for item in row:
+                print(item, end='')
+            print()
+        print('--------------------------')
 
 
-play_round()
+def game():
+    print('*' * 32, 'START GAME', '*' * 32)
+
+    bag = Bag()
+    player_card, computer_card = Card(player_card=True), Card(player_card=False)
+    user_input = None
+
+    while True:
+
+        if user_input == 'q':
+            break
+
+        barrel = next(bag.get_barrel())
+        player_card.show_card()
+        computer_card.show_card()
+
+        user_input = input('Зачеркнуть цифру? (y/n) / Выйти из игры? (q)')
+
+        if computer_card.check_card(barrel):
+            computer_card.update_card(barrel)
+
+        if user_input == 'y':
+            if player_card.check_card(barrel):
+                player_card.update_card(barrel)
+            else:
+                print('Такой цифры на карточке нет. Вы проиграли!')
+                break
+        elif user_input == 'n':
+            if player_card.check_card(barrel):
+                print('Такая цифра есть на карточке. Вы проиграли!')
+                break
+        else:
+            while user_input not in ['y', 'n', 'q']:
+                user_input = input('Зачеркнуть цифру? (y/n) / Выйти из игры? (q)')
+
+        player_digits_left = player_card.digits_left
+        computer_digits_left = computer_card.digits_left
+
+        if player_digits_left == 0 and computer_digits_left == 0:
+            print('Ничья!')
+        elif player_digits_left == 0:
+            print('Вы выиграли!')
+        elif computer_digits_left == 0:
+            print('Компьютер выиграл!!')
+        else:
+            continue
+            
+    print('*' * 33, 'END GAME', '*' * 33)
+
+
+game()
