@@ -52,14 +52,22 @@ import random
 class Bag:
     def __init__(self, number=90):
         self._counter = number
+        self._barrels = self._generate_bag()
 
-    def get_barrel(self):
+    def _generate_bag(self):
         barrels = [x for x in range(1, self._counter + 1)]
         random.shuffle(barrels)
-        for idx, barrel in enumerate(barrels, start=1):
-            self._counter -= 1
+        return barrels
+
+    def get_barrel(self):
+        self._counter -= 1
+        for barrel in self._barrels:
             print(f'Новый бочонок: {barrel} (осталось {self._counter})')
             yield barrel
+
+    @property
+    def barrels_left(self):
+        return self._counter
 
 
 class Card():
@@ -121,12 +129,17 @@ def game():
         if user_input == 'q':
             break
 
+        if bag.barrels_left == 0:
+            break
+
         barrel = next(bag.get_barrel())
 
         player_card.show_card()
         computer_card.show_card()
 
-        user_input = input('Зачеркнуть цифру? (y/n) / Выйти из игры? (q)')
+        user_input = input('Зачеркнуть цифру? (y/n) / Выйти из игры? (q):')
+
+        print('\n')
 
         if computer_card.check_card(barrel):
             computer_card.update_card(barrel)
@@ -137,10 +150,12 @@ def game():
             else:
                 print('Такой цифры на карточке нет. Вы проиграли!')
                 break
+                pass
         elif user_input == 'n':
             if player_card.check_card(barrel):
                 print('Такая цифра есть на карточке. Вы проиграли!')
                 break
+                pass
         else:
             while user_input not in ['y', 'n', 'q']:
                 user_input = input('Зачеркнуть цифру? (y/n) / Выйти из игры? (q)')
