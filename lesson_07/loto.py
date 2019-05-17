@@ -60,8 +60,9 @@ class Bag:
         return barrels
 
     def get_barrel(self):
-        self._counter -= 1
-        for barrel in self._barrels:
+        while self._counter > 0:
+            barrel = self._barrels.pop()
+            self._counter -= 1
             print(f'Новый бочонок: {barrel} (осталось {self._counter})')
             yield barrel
 
@@ -173,6 +174,5 @@ def game():
             continue
 
     print('*' * 33, 'END GAME', '*' * 33)
-
 
 game()
